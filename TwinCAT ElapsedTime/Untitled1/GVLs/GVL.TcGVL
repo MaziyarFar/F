@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <GVL Name="GVL" Id="{e2b737e1-ecfa-4c3d-8282-12247fb57bf5}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	sensorN1 AT %I* : BOOL ;
+	sensorN2 AT %I* : BOOL ;
+	
+	valveClose AT %Q* : BOOL;
+	
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="MAIN" Id="{26a15cae-5634-4149-81e6-7ccf156c7169}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	timeElapsed : Counter;
+	recordedTime : TIME ;
+	valve : CloseValve;
+	valveClose : BOOL ;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(* IF NOT GVL.sensorN1 AND readyToMeasureTime THEN
+	startTime := TIME() ;
+	measuringStarted := TRUE ;
+END_IF 
+
+IF NOT GVL.sensorN2 AND measuringStarted THEN
+	stopTime := TIME() ;
+END_IF *)
+
+//startMeasurement := TRUE;
+
+
+valve(closeValve => GVL.valveClose);
+
+timeElapsed( timeElapsed => recordedTime);
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="43" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="Counter" Id="{fc193301-d8f2-4dd8-aee4-498ebab1a227}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Counter
+VAR_INPUT
+	
+END_VAR
+VAR_OUTPUT
+	timeElapsed: TIME := T#0S;
+END_VAR
+VAR
+	readyToCount : BOOL := FALSE;
+	timeStart: TIME;  
+ 	timerRunning: BOOL := FALSE;
+	//timeOne : TIME;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF GVL.sensorN1 AND GVL.sensorN2 THEN
+	readyToCount := TRUE;
+END_IF
+
+IF NOT GVL.sensorN1 AND readyToCount THEN
+	timeStart := TIME();
+	readyToCount := FALSE;
+	timerRunning := TRUE;
+END_IF
+
+IF NOT GVL.sensorN2 AND timerRunning THEN
+	timeElapsed := TIME() - timeStart;
+	timerRunning := FALSE;
+END_IF
+
+
+
+
+
+(* IF startMeasurement AND NOT GVL.sensorN1 THEN
+    timerRunning := TRUE;
+    timeStart := TIME();
+	timeOne := timeStart;
+	startMeasurement := FALSE;
+END_IF
+
+IF timerRunning AND NOT GVL.sensorN2 THEN
+    timeElapsed := TIME() - timeOne;
+    timerRunning := FALSE;
+END_IF *)]]></ST>
+    </Implementation>
+    <LineIds Name="Counter">
+      <LineId Id="54" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="64" Count="1" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="50" Count="3" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="22" Count="2" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="27" Count="3" />
+      <LineId Id="26" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

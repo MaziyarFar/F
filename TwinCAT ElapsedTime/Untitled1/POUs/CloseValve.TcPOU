@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="CloseValve" Id="{dccdc7eb-8f11-48b0-ba86-f0c95f914d23}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CloseValve
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	closeValve : BOOL := FALSE;
+END_VAR
+VAR
+	readyToClose : BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF GVL.sensorN1 AND GVL.sensorN2 THEN
+	closeValve := TRUE;
+	readyToClose := TRUE;
+ELSIF NOT GVL.sensorN1 AND NOT GVL.sensorN2 THEN
+	closeValve := FALSE;
+END_IF
+
+IF NOT GVL.sensorN1 AND GVL.sensorN2 AND NOT readyToClose THEN 
+	CloseValve := TRUE;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="CloseValve">
+      <LineId Id="10" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="12" Count="5" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
