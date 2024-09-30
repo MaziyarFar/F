@@ -53,6 +53,18 @@ END_IF
 IF NOT GVL.sensorN1 AND GVL.sensorN2 AND NOT readyToClose THEN 
 	CloseValve := TRUE;
 END_IF
+
+(*--------------------------Valve Second version--------------------------*)
+(*IF GVL.sensorN1 AND GVL.sensorN2 THEN
+	closeValve := TRUE;
+	readyToClose := TRUE;
+ELSIF NOT GVL.sensorN1 AND NOT GVL.sensorN2 THEN
+	closeValve := FALSE;
+END_IF
+
+IF NOT GVL.sensorN1 AND GVL.sensorN2 AND NOT readyToClose THEN 
+	CloseValve := FALSE;
+END_IF*)
 (*--------------------------Volume--------------------------*)
 
 TimeToReal := (TIME_TO_REAL(timeElapsed)/ 1000); // The unit of TimeToReal is Second.
@@ -65,6 +77,8 @@ FuelVolumePerSec := TankVolume / (TimeToReal/60) ;]]></ST>
       <LineId Id="45" Count="0" />
       <LineId Id="34" Count="9" />
       <LineId Id="33" Count="0" />
+      <LineId Id="75" Count="10" />
+      <LineId Id="74" Count="0" />
       <LineId Id="66" Count="0" />
       <LineId Id="69" Count="0" />
       <LineId Id="68" Count="0" />
