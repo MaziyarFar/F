@@ -3,10 +3,15 @@
   <POU Name="MAIN" Id="{26a15cae-5634-4149-81e6-7ccf156c7169}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	timeElapsed : Counter;
+	//timeElapsed : FuelMeasurement;
+	//valve : FuelMeasurement;
+	
+	FuelMeasurement : FuelMeasurement;
+	
 	recordedTime : TIME ;
-	valve : CloseValve;
 	valveClose : BOOL ;
+	FuelVolumePerSec : REAL;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -23,9 +28,12 @@ END_IF *)
 //startMeasurement := TRUE;
 
 
-valve(closeValve => GVL.valveClose);
 
-timeElapsed( timeElapsed => recordedTime);
+FuelMeasurement(CloseValve => GVL.valveClose, timeElapsed => recordedTime, FuelVolumePerSec => FuelVolumePerSec);
+
+//valve(closeValve => GVL.valveClose);
+
+//timeElapsed( timeElapsed => recordedTime);
 
 ]]></ST>
     </Implementation>
@@ -40,6 +48,7 @@ timeElapsed( timeElapsed => recordedTime);
       <LineId Id="19" Count="1" />
       <LineId Id="56" Count="0" />
       <LineId Id="35" Count="0" />
+      <LineId Id="70" Count="2" />
       <LineId Id="57" Count="0" />
       <LineId Id="39" Count="0" />
       <LineId Id="50" Count="0" />

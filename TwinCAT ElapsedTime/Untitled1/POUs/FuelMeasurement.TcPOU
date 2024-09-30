@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="FuelMeasurement" Id="{e8713979-005e-49c2-8c38-3baad67b76ee}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FuelMeasurement
+VAR CONSTANT
+	TankVolume : INT := 1000; // The volume may vary depending on the tank volume.
+END_VAR
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	timeElapsed: TIME := T#0S;
+	
+	closeValve : BOOL := FALSE;
+	
+	FuelVolumePerSec : REAL;
+END_VAR
+VAR
+	readyToCount : BOOL := FALSE;
+	timeStart: TIME;  
+ 	timerRunning: BOOL := FALSE;
+	
+	readyToClose : BOOL := FALSE;
+	
+	TimeToReal : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+IF GVL.sensorN1 AND GVL.sensorN2 THEN
+	readyToCount := TRUE;
+END_IF
+
+IF NOT GVL.sensorN1 AND readyToCount THEN
+	timeStart := TIME();
+	readyToCount := FALSE;
+	timerRunning := TRUE;
+END_IF
+
+IF NOT GVL.sensorN2 AND timerRunning THEN
+	timeElapsed := TIME() - timeStart;
+	timerRunning := FALSE;
+END_IF
+
+(*--------------------------Valve--------------------------*)
+IF GVL.sensorN1 AND GVL.sensorN2 THEN
+	closeValve := TRUE;
+	readyToClose := TRUE;
+ELSIF NOT GVL.sensorN1 AND NOT GVL.sensorN2 THEN
+	closeValve := FALSE;
+END_IF
+
+IF NOT GVL.sensorN1 AND GVL.sensorN2 AND NOT readyToClose THEN 
+	CloseValve := TRUE;
+END_IF
+(*--------------------------Valve--------------------------*)
+
+TimeToReal := (TIME_TO_REAL(timeElapsed)/ 1000); // The unit of TimeToReal is Second.
+FuelVolumePerSec := TankVolume / (TimeToReal/60) ;]]></ST>
+    </Implementation>
+    <LineIds Name="FuelMeasurement">
+      <LineId Id="31" Count="1" />
+      <LineId Id="18" Count="12" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="34" Count="9" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="67" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

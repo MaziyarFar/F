@@ -37,7 +37,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{54BC7D13-92AB-4ABB-A366-BB47AD8F709B}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{1C17A562-925C-23DD-D7B8-75C4F3965AF3}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{159500A7-10A9-F4D8-8535-8ACC449C138B}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -76,7 +76,7 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="2" DevType="161" AmsNetId="5.156.235.236.3.1">
+			<Device Id="2" DevType="161" AmsNetId="5.156.235.236.3.1" RemoteName="Gerät 2 (CX7000)_Geräte">
 				<Name>Gerät 2 (CX7000)</Name>
 				<DevData>3412000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DevData>
 				<Image Id="2" AddrType="1" ImageType="3" SizeIn="6" SizeOut="20">
