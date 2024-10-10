@@ -13,7 +13,6 @@ VAR
 	FuelVolumePerSec : REAL;
 	bMeasurementDone1 : BOOL := FALSE;
 	
-	//bMeasurementOngoing2: BOOL := FALSE;
 END_VAR
 ]]></Declaration>
     <Implementation>

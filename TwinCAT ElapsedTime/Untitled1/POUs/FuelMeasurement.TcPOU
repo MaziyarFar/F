@@ -28,42 +28,11 @@ VAR
 	readyToClose : BOOL := FALSE;
 	
 	TimeToReal : REAL;
-	//bMeasurementDone: BOOL := FALSE;
 	INT1: INT :=0;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*
-IF GVL.sensorN1 AND GVL.sensorN2 AND bFuelMeasurement THEN
-	valveN1 := TRUE;
-	valveN2 := TRUE;
-	readyToCount := TRUE;
-END_IF  
-
-IF NOT GVL.sensorN1 AND readyToCount THEN
-	timeStart := TIME();
-	readyToCount := FALSE;
-	timerRunning := TRUE;
-END_IF
-
-IF NOT GVL.sensorN2 AND timerRunning THEN
-	timeElapsed := TIME() - timeStart;
-	timerRunning := FALSE;
-	bMeasurementDone := TRUE;
-END_IF
-
-TimeToReal := (TIME_TO_REAL(timeElapsed)/ 1000); // The unit of TimeToReal is Second.
-FuelVolumePerSec := TankVolume / (TimeToReal/60) ;
-
-IF bMeasurementDone THEN
-	valveN1 := FALSE;
-	valveN2 := FALSE;
-	bEndFB := TRUE;
-END_IF
-*)
-(*--------------------State---------------------*)
-
-CASE INT1 OF
+      <ST><![CDATA[CASE INT1 OF
 0:
 	IF GVL.sensorN1 AND GVL.sensorN2 THEN
 		INT1 := 10;
@@ -72,13 +41,11 @@ CASE INT1 OF
 	IF GVL.sensorN1 AND GVL.sensorN2 AND bFuelMeasurement THEN
 	valveN1 := TRUE;
 	valveN2 := TRUE;
-	//readyToCount := TRUE;
 	INT1 := 20;
 	END_IF  
 20:  //Wait for upper sensor
 	IF NOT GVL.sensorN1 THEN
 	timeStart := TIME();
-	//readyToCount := FALSE;
 	timerRunning := TRUE;
 	INT1 := 30;
 	END_IF   
@@ -86,7 +53,6 @@ CASE INT1 OF
 	IF NOT GVL.sensorN2 THEN
 	timeElapsed := TIME() - timeStart;
 	timerRunning := FALSE;
-	//bMeasurementDone := TRUE;
 	
 	TimeToReal := (TIME_TO_REAL(timeElapsed)/ 1000); // The unit of TimeToReal is Second.
 	FuelVolumePerSec := TankVolume / (TimeToReal/60) ;
@@ -94,12 +60,10 @@ CASE INT1 OF
 	INT1 := 40;
 	END_IF
 40: //Measurement finished
-	
-	//IF bMeasurementDone THEN
+
 	valveN1 := FALSE;
 	valveN2 := FALSE;
 	bEndFB := TRUE;
-	//bMeasurementDone := FALSE;
 	IF GVL.sensorN1 AND GVL.sensorN2 THEN
 	INT1 := 10;
 	END_IF
@@ -107,38 +71,24 @@ CASE INT1 OF
 END_CASE;]]></ST>
     </Implementation>
     <LineIds Name="FuelMeasurement">
-      <LineId Id="331" Count="0" />
-      <LineId Id="179" Count="2" />
-      <LineId Id="262" Count="0" />
-      <LineId Id="184" Count="0" />
-      <LineId Id="263" Count="4" />
-      <LineId Id="185" Count="0" />
-      <LineId Id="268" Count="4" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="274" Count="1" />
-      <LineId Id="273" Count="0" />
-      <LineId Id="277" Count="4" />
-      <LineId Id="276" Count="0" />
-      <LineId Id="286" Count="0" />
-      <LineId Id="285" Count="0" />
-      <LineId Id="288" Count="1" />
+      <LineId Id="289" Count="0" />
       <LineId Id="332" Count="3" />
       <LineId Id="290" Count="0" />
-      <LineId Id="300" Count="4" />
+      <LineId Id="300" Count="2" />
+      <LineId Id="304" Count="0" />
       <LineId Id="299" Count="0" />
       <LineId Id="293" Count="0" />
-      <LineId Id="307" Count="4" />
+      <LineId Id="307" Count="1" />
+      <LineId Id="310" Count="1" />
       <LineId Id="306" Count="0" />
       <LineId Id="294" Count="0" />
-      <LineId Id="314" Count="3" />
+      <LineId Id="314" Count="2" />
       <LineId Id="320" Count="3" />
       <LineId Id="318" Count="0" />
       <LineId Id="313" Count="0" />
       <LineId Id="312" Count="0" />
-      <LineId Id="325" Count="0" />
-      <LineId Id="336" Count="0" />
+      <LineId Id="368" Count="0" />
       <LineId Id="326" Count="2" />
-      <LineId Id="330" Count="0" />
       <LineId Id="337" Count="0" />
       <LineId Id="329" Count="0" />
       <LineId Id="324" Count="0" />
