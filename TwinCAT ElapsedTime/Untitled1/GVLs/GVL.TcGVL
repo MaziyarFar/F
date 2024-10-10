@@ -7,7 +7,10 @@ VAR_GLOBAL
 	sensorN1 AT %I* : BOOL ;
 	sensorN2 AT %I* : BOOL ;
 	
-	valveClose AT %Q* : BOOL;
+	valveN1 AT %Q* : BOOL;
+	ValveN2 AT %Q* : BOOL;
+	
+	bStartMeasurement : BOOL := FALSE;
 	
 	
 END_VAR]]></Declaration>

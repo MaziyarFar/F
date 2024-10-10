@@ -3,18 +3,24 @@
   <POU Name="FuelMeasurement" Id="{e8713979-005e-49c2-8c38-3baad67b76ee}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FuelMeasurement
 VAR CONSTANT
-	TankVolume : INT := 1000; // The volume may vary depending on the tank volume.
+	TankVolume : INT := 334; // The volume may vary depending on the tank volume.
+	
 END_VAR
 VAR_INPUT
+	bFuelMeasurement : BOOL := TRUE;
+	
 END_VAR
 VAR_OUTPUT
 	timeElapsed: TIME := T#0S;
 	
-	closeValve : BOOL := FALSE;
+	valveN1 : BOOL := FALSE;
+	valveN2 : BOOL := FALSE;
+	bEndFB : BOOL;
+	FuelVolumePerSec : REAL := 0;
 	
-	FuelVolumePerSec : REAL;
 END_VAR
 VAR
+	bMeasurementDone : BOOL;
 	readyToCount : BOOL := FALSE;
 	timeStart: TIME;  
  	timerRunning: BOOL := FALSE;
@@ -22,14 +28,17 @@ VAR
 	readyToClose : BOOL := FALSE;
 	
 	TimeToReal : REAL;
+	//bMeasurementDone: BOOL := FALSE;
+	INT1: INT :=0;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-(*--------------------------Sensorse--------------------------*)
-IF GVL.sensorN1 AND GVL.sensorN2 THEN
+      <ST><![CDATA[(*
+IF GVL.sensorN1 AND GVL.sensorN2 AND bFuelMeasurement THEN
+	valveN1 := TRUE;
+	valveN2 := TRUE;
 	readyToCount := TRUE;
-END_IF
+END_IF  
 
 IF NOT GVL.sensorN1 AND readyToCount THEN
 	timeStart := TIME();
@@ -40,49 +49,101 @@ END_IF
 IF NOT GVL.sensorN2 AND timerRunning THEN
 	timeElapsed := TIME() - timeStart;
 	timerRunning := FALSE;
+	bMeasurementDone := TRUE;
 END_IF
-
-(*--------------------------Valve--------------------------*)
-IF GVL.sensorN1 AND GVL.sensorN2 THEN
-	closeValve := TRUE;
-	readyToClose := TRUE;
-ELSIF NOT GVL.sensorN1 AND NOT GVL.sensorN2 THEN
-	closeValve := FALSE;
-END_IF
-
-IF NOT GVL.sensorN1 AND GVL.sensorN2 AND NOT readyToClose THEN 
-	CloseValve := TRUE;
-END_IF
-
-(*--------------------------Valve Second version--------------------------*)
-(*IF GVL.sensorN1 AND GVL.sensorN2 THEN
-	closeValve := TRUE;
-	readyToClose := TRUE;
-ELSIF NOT GVL.sensorN1 AND NOT GVL.sensorN2 THEN
-	closeValve := FALSE;
-END_IF
-
-IF NOT GVL.sensorN1 AND GVL.sensorN2 AND NOT readyToClose THEN 
-	CloseValve := FALSE;
-END_IF*)
-(*--------------------------Volume--------------------------*)
 
 TimeToReal := (TIME_TO_REAL(timeElapsed)/ 1000); // The unit of TimeToReal is Second.
-FuelVolumePerSec := TankVolume / (TimeToReal/60) ;]]></ST>
+FuelVolumePerSec := TankVolume / (TimeToReal/60) ;
+
+IF bMeasurementDone THEN
+	valveN1 := FALSE;
+	valveN2 := FALSE;
+	bEndFB := TRUE;
+END_IF
+*)
+(*--------------------State---------------------*)
+
+CASE INT1 OF
+0:
+	IF GVL.sensorN1 AND GVL.sensorN2 THEN
+		INT1 := 10;
+	END_IF
+10:  //Ready
+	IF GVL.sensorN1 AND GVL.sensorN2 AND bFuelMeasurement THEN
+	valveN1 := TRUE;
+	valveN2 := TRUE;
+	//readyToCount := TRUE;
+	INT1 := 20;
+	END_IF  
+20:  //Wait for upper sensor
+	IF NOT GVL.sensorN1 THEN
+	timeStart := TIME();
+	//readyToCount := FALSE;
+	timerRunning := TRUE;
+	INT1 := 30;
+	END_IF   
+30: //Wait for lower sensor
+	IF NOT GVL.sensorN2 THEN
+	timeElapsed := TIME() - timeStart;
+	timerRunning := FALSE;
+	//bMeasurementDone := TRUE;
+	
+	TimeToReal := (TIME_TO_REAL(timeElapsed)/ 1000); // The unit of TimeToReal is Second.
+	FuelVolumePerSec := TankVolume / (TimeToReal/60) ;
+
+	INT1 := 40;
+	END_IF
+40: //Measurement finished
+	
+	//IF bMeasurementDone THEN
+	valveN1 := FALSE;
+	valveN2 := FALSE;
+	bEndFB := TRUE;
+	//bMeasurementDone := FALSE;
+	IF GVL.sensorN1 AND GVL.sensorN2 THEN
+	INT1 := 10;
+	END_IF
+	
+END_CASE;]]></ST>
     </Implementation>
     <LineIds Name="FuelMeasurement">
-      <LineId Id="31" Count="1" />
-      <LineId Id="18" Count="12" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="45" Count="0" />
-      <LineId Id="34" Count="9" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="75" Count="10" />
-      <LineId Id="74" Count="0" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="69" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="67" Count="0" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="179" Count="2" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="263" Count="4" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="268" Count="4" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="274" Count="1" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="277" Count="4" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="288" Count="1" />
+      <LineId Id="332" Count="3" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="300" Count="4" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="307" Count="4" />
+      <LineId Id="306" Count="0" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="314" Count="3" />
+      <LineId Id="320" Count="3" />
+      <LineId Id="318" Count="0" />
+      <LineId Id="313" Count="0" />
+      <LineId Id="312" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="326" Count="2" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="324" Count="0" />
+      <LineId Id="319" Count="0" />
+      <LineId Id="287" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

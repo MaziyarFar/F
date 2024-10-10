@@ -37,7 +37,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{54BC7D13-92AB-4ABB-A366-BB47AD8F709B}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{B047AD67-D43E-E681-3490-7E5C49D443F9}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{261E6F01-034C-A5DB-966F-6E384728E607}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -54,10 +54,25 @@
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask Outputs</Name>
 						<Var>
-							<Name>GVL.valveClose</Name>
+							<Name>MAIN.iCounter</Name>
+							<Type>DINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL.valveN1</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL.ValveN2</Name>
 							<Type>BOOL</Type>
 						</Var>
 					</Vars>
+					<UnrestoredVarLinks ImportTime="2024-10-08T14:52:49">
+						<OwnerA Name="InputDst" Prefix="TIPC^Untitled1^Untitled1 Instance" Type="1">
+							<OwnerB Name="TIID^Device 2 (CX7000)^Term 1 (CX7028)">
+								<Link VarA="GVL.bFuelMeasurement" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Module 1 (DIO_2x)^DIO_2x Input Channel 2^Input" Size="1" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+					</UnrestoredVarLinks>
 					<Contexts>
 						<Context>
 							<Id>0</Id>
@@ -311,7 +326,8 @@
 			<OwnerB Name="TIID^Device 2 (CX7000)^Term 1 (CX7028)">
 				<Link VarA="PlcTask Inputs^GVL.sensorN1" VarB="Module 1 (DIO_2x)^DIO_2x Input Channel 1^Input"/>
 				<Link VarA="PlcTask Inputs^GVL.sensorN2" VarB="Module 3 (DIO_2x)^DIO_2x Input Channel 1^Input"/>
-				<Link VarA="PlcTask Outputs^GVL.valveClose" VarB="Module 1 (DIO_2x)^DIO_2x Output Channel 1^Output"/>
+				<Link VarA="PlcTask Outputs^GVL.ValveN2" VarB="Module 3 (DIO_2x)^DIO_2x Output Channel 1^Output"/>
+				<Link VarA="PlcTask Outputs^GVL.valveN1" VarB="Module 1 (DIO_2x)^DIO_2x Output Channel 1^Output"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

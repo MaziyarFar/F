@@ -3,22 +3,35 @@
   <POU Name="MAIN" Id="{26a15cae-5634-4149-81e6-7ccf156c7169}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	
-	FuelMeasurement : FuelMeasurement;
+	iCounter AT %Q*		: DINT;
+
+	FuelMeasurement1 : FuelMeasurement;
 	recordedTime : TIME ;
-	valveClose : BOOL ;
+	bMeasurementOngoing1 : BOOL;
+	valveN1 : BOOL ;
+	valveN2 : BOOL ;
 	FuelVolumePerSec : REAL;
+	bMeasurementDone1 : BOOL := FALSE;
 	
+	//bMeasurementOngoing2: BOOL := FALSE;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FuelMeasurement(CloseValve => GVL.valveClose, timeElapsed => recordedTime, FuelVolumePerSec => FuelVolumePerSec);
+      <ST><![CDATA[iCounter := iCounter + 1;
+
+
+
+FuelMeasurement1(bFuelMeasurement := GVL.bStartMeasurement, valveN1 => GVL.valveN1,valveN2 => GVL.ValveN2 , timeElapsed => recordedTime, bEndFB => bMeasurementDone1, FuelVolumePerSec => FuelVolumePerSec);
+
+
 
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="57" Count="0" />
-      <LineId Id="44" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="142" Count="3" />
+      <LineId Id="149" Count="1" />
       <LineId Id="43" Count="0" />
     </LineIds>
   </POU>
